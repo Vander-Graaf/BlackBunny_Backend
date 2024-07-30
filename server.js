@@ -10,8 +10,7 @@ const port = 5000;
 app.use(cors());
 app.use(express.json());
 
-const uri =
-  "mongodb://127.0.0.1:27017/Store?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.12";
+const uri = "mongodb+srv://Vander:Qq9JsBUOi7WKeM72@store.z3zyqyw.mongodb.net/";
 mongoose
   .connect(uri)
   .then(() => {
