@@ -1,25 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const path = require("path"); // Make sure to require 'path' at the top
 
 require("dotenv").config();
 
 const app = express();
-
 const port = 5000;
-const allowedOrigins = ["https://blackbunny.onrender.com"];
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (allowedOrigins.includes(origin) || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-  })
-);
+app.use(cors());
 app.use(express.json());
 
 const uri = "mongodb+srv://Vander:Qq9JsBUOi7WKeM72@store.z3zyqyw.mongodb.net/";
@@ -38,6 +27,14 @@ const usersRouter = require("./routes/users");
 
 app.use("/products", productsRouter);
 app.use("/users", usersRouter);
+
+if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
+  app.use(express.static(path.join(__dirname, "client", "build"))); // Use 'path.join' for better cross-platform compatibility
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
