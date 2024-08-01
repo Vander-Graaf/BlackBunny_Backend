@@ -1,17 +1,17 @@
+const path = require("path"); // Make sure to require 'path' at the top
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const path = require("path"); // Make sure to require 'path' at the top
 
 require("dotenv").config();
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
-const uri = "mongodb+srv://Vander:Qq9JsBUOi7WKeM72@store.z3zyqyw.mongodb.net/";
+const uri = process.env.MONGODB_URI;
 
 mongoose
   .connect(uri)
