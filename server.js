@@ -14,7 +14,7 @@ app.use(express.json());
 const uri = process.env.MONGODB_URI;
 
 mongoose
-  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(uri)
   .then(() => {
     const db = mongoose.connection.db;
     console.log("Connected to database:", db.databaseName); // Logs the connected database name
