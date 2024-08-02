@@ -22,4 +22,17 @@ router.route("/add").post((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
+router.route("/:id").get((req, res) => {
+  product
+    .findById(req.params.id)
+    .then((product) => {
+      if (product) {
+        res.json(product);
+      } else {
+        res.status(404).json("Product not found");
+      }
+    })
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
 module.exports = router;

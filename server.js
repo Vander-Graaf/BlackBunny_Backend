@@ -14,27 +14,18 @@ app.use(express.json());
 const uri = process.env.MONGODB_URI;
 
 mongoose
-  .connect(uri)
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    console.log("MongoDB database connection established successfully");
+    const db = mongoose.connection.db;
+    console.log("Connected to database:", db.databaseName); // Logs the connected database name
   })
-  .catch((error) => {
-    console.error("MongoDB connection error:", error);
-  });
+  .catch((error) => console.error("Database connection error:", error));
 
 const productsRouter = require("./routes/products");
 const usersRouter = require("./routes/users");
 
 app.use("/products", productsRouter);
 app.use("/users", usersRouter);
-
-//if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
-//  app.use(express.static(path.join(__dirname, "client", "build"))); // Use 'path.join' for better cross-platform compatibility
-//
-//  app.get("*", (req, res) => {
-//    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-//  });
-//}
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
