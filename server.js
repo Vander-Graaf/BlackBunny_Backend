@@ -14,16 +14,6 @@ app.use(express.json());
 // Serve static files from the 'assets/ProductPhoto' directory
 app.use("/images", express.static(path.join(__dirname, "./assets/ProductPhoto")));
 
-if (process.env.NODE_ENV === "production") {
-  const root = path.join(__dirname, "client", "build");
-  app.use(express.static(root));
-
-  // Fallback route for client-side routing
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(root, "index.html"));
-  });
-}
-
 const uri = process.env.MONGODB_URI;
 
 mongoose
