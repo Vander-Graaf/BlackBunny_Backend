@@ -16,15 +16,6 @@ app.use("/images", express.static(path.join(__dirname, "./assets/ProductPhoto"))
 
 const uri = process.env.MONGODB_URI;
 
-if (process.env.NODE_ENV === "production") {
-  const root = path.join(__dirname, "dist");
-  app.use(express.static(root));
-
-  // Fallback route for client-side routing
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(root, "index.html"));
-  });
-}
 mongoose
   .connect(uri)
   .then(() => {
