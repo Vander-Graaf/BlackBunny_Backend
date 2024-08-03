@@ -1,7 +1,7 @@
-const path = require("path"); // Make sure to require 'path' at the top
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const path = require("path"); // Import path for serving static files
 
 require("dotenv").config();
 
@@ -11,13 +11,16 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// Serve static files from the 'assets/ProductPhoto' directory
+app.use("/images", express.static(path.join(__dirname, "./assets/ProductPhoto")));
+
 const uri = process.env.MONGODB_URI;
 
 mongoose
   .connect(uri)
   .then(() => {
     const db = mongoose.connection.db;
-    console.log("Connected to database:", db.databaseName); // Logs the connected database name
+    console.log("Connected to database:", db.databaseName);
   })
   .catch((error) => console.error("Database connection error:", error));
 
