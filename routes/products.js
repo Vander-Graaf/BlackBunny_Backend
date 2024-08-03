@@ -10,6 +10,7 @@ const router = express.Router();
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(__dirname, "../assets/ProductPhoto");
+    // Ensure the directory exists
     fs.mkdirSync(uploadPath, { recursive: true });
     cb(null, uploadPath);
   },
@@ -73,8 +74,10 @@ router.route("/:id").delete(async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
+    // Delete the product from the database
     await product.findByIdAndDelete(req.params.id);
 
+    // Delete the product image file if it exists
     if (productToDelete.image) {
       const filePath = path.join(__dirname, "../assets/ProductPhoto", productToDelete.image);
       fs.unlink(filePath, (err) => {
@@ -102,22 +105,18 @@ router.route("/admin/login").post((req, res) => {
   }
 });
 
-// Route for admin dashboard
-router.route("/admin").get((req, res) => {
-  res.send("Admin dashboard or some relevant content");
-});
-
-// Route to update a product by ID
 router.route("/:id").put(upload.single("image"), async (req, res) => {
   const { productname, description, price } = req.body;
   const newImage = req.file ? req.file.filename : req.body.image;
 
   try {
+    // Find the existing product
     const existingProduct = await product.findById(req.params.id);
     if (!existingProduct) {
       return res.status(404).json("Product not found");
     }
 
+    // If there's a new image and it's different from the existing one, handle deletion
     if (req.file && existingProduct.image && newImage !== existingProduct.image) {
       const oldFilePath = path.join(__dirname, "../assets/ProductPhoto", existingProduct.image);
       fs.access(oldFilePath, fs.constants.F_OK, (err) => {
@@ -135,6 +134,7 @@ router.route("/:id").put(upload.single("image"), async (req, res) => {
       });
     }
 
+    // Update the product with the new image or retain the old one if no new image is provided
     const updatedProduct = await product.findByIdAndUpdate(
       req.params.id,
       { productname, description, price, image: newImage },
