@@ -1,42 +1,30 @@
+// models/order.model.js
 const mongoose = require("mongoose");
 
-const OrderSchema = new mongoose.Schema({
-  customerName: {
-    type: String,
-    required: true,
-  },
-  address: {
-    type: String,
-    required: true,
-  },
-  phone: {
-    type: String,
-    required: true,
-  },
-  totalPrice: {
-    type: Number,
-    required: true,
-  },
+const orderSchema = new mongoose.Schema({
+  totalPrice: Number,
+  customerName: String,
+  address: String,
+  phone: String,
   products: [
     {
-      _id: mongoose.Schema.Types.ObjectId,
       productname: String,
       price: Number,
       quantity: Number,
       image: String,
+      _id: mongoose.Schema.Types.ObjectId,
     },
   ],
-  orderCode: {
+  orderCode: String,
+  status: {
     type: String,
-    required: true,
-    unique: true,
+    enum: ["Ожидание", "выполнен", "отклонен"],
+    default: "Ожидание",
   },
   createdAt: {
     type: Date,
-    default: Date.now, // Automatically set to the current date and time
+    default: Date.now,
   },
 });
 
-const Order = mongoose.model("Order", OrderSchema);
-
-module.exports = Order;
+module.exports = mongoose.model("Order", orderSchema);
