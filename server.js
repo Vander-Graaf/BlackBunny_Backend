@@ -15,7 +15,6 @@ app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "./assets/ProductPhoto")));
 
 const uri = process.env.MONGODB_URI;
-
 mongoose
   .connect(uri)
   .then(() => {
@@ -31,6 +30,8 @@ const orderRoutes = require("./routes/orders");
 app.use("/products", productsRouter);
 app.use("/users", usersRouter);
 app.use("/orders", orderRoutes); // Use the orders routes
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

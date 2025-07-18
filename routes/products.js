@@ -97,7 +97,7 @@ router.route("/:id").delete(async (req, res) => {
 // Route for admin login
 router.route("/admin/login").post((req, res) => {
   const { password } = req.body;
-  const ADMIN_PASSWORD = "1";
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
   if (password === ADMIN_PASSWORD) {
     res.json({ authenticated: true });
   } else {
