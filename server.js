@@ -8,7 +8,12 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://blackbunny-46eb.onrender.com", "http://localhost:5173"], // Укажите нужные домены
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Serve static files from the 'assets/ProductPhoto' directory
@@ -30,8 +35,6 @@ const orderRoutes = require("./routes/orders");
 app.use("/products", productsRouter);
 app.use("/users", usersRouter);
 app.use("/orders", orderRoutes); // Use the orders routes
-
-
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
