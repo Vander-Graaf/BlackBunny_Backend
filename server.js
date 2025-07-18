@@ -17,7 +17,7 @@ app.use(
 app.use(express.json());
 
 // Serve static files from the 'assets/ProductPhoto' directory
-app.use("/images", express.static(path.join(__dirname, "./assets/ProductPhoto")));
+app.use("/images", express.static(path.join(__dirname, "./assets/disk")));
 
 const uri = process.env.MONGODB_URI;
 mongoose
