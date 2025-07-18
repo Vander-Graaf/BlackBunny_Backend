@@ -18,8 +18,15 @@ app.use(
 );
 app.use(express.json());
 
+const fs = require("fs");
+const uploadDir = "/data/upload";
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+  console.log("Папка создана:", uploadDir);
+}
 // Serve static files from the 'assets/ProductPhoto' directory
-app.use("/images", express.static(path.join(__dirname, "./data/upload")));
+app.use("/images", express.static(uploadDir));
 
 const uri = process.env.MONGODB_URI;
 mongoose
