@@ -1,3 +1,5 @@
+//products.js
+
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
@@ -9,7 +11,7 @@ const router = express.Router();
 // Set up multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, "../assets/disk");
+    const uploadPath = path.join(__dirname, "../data/upload");
     // Ensure the directory exists
     fs.mkdirSync(uploadPath, { recursive: true });
     cb(null, uploadPath);
@@ -79,7 +81,7 @@ router.route("/:id").delete(async (req, res) => {
 
     // Delete the product image file if it exists
     if (productToDelete.image) {
-      const filePath = path.join(__dirname, "../assets/disk", productToDelete.image);
+      const filePath = path.join(__dirname, "../data/upload", productToDelete.image);
       fs.unlink(filePath, (err) => {
         if (err) {
           console.error("Error deleting file:", err);
@@ -118,7 +120,7 @@ router.route("/:id").put(upload.single("image"), async (req, res) => {
 
     // If there's a new image and it's different from the existing one, handle deletion
     if (req.file && existingProduct.image && newImage !== existingProduct.image) {
-      const oldFilePath = path.join(__dirname, "../assets/disk", existingProduct.image);
+      const oldFilePath = path.join(__dirname, "../data/upload", existingProduct.image);
       fs.access(oldFilePath, fs.constants.F_OK, (err) => {
         if (!err) {
           fs.unlink(oldFilePath, (err) => {

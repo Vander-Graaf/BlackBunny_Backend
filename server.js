@@ -1,3 +1,5 @@
+//server.js
+
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -17,7 +19,7 @@ app.use(
 app.use(express.json());
 
 // Serve static files from the 'assets/ProductPhoto' directory
-app.use("/images", express.static(path.join(__dirname, "./assets/disk")));
+app.use("/images", express.static(path.join(__dirname, "./data/upload")));
 
 const uri = process.env.MONGODB_URI;
 mongoose
