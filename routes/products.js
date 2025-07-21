@@ -35,13 +35,11 @@ router.route("/").get((req, res) => {
       res.status(500).json("Error fetching products");
     });
 });
-
-// Route to add a new product
 router.route("/add").post(upload.single("image"), (req, res) => {
-  const { productname, description, price } = req.body;
+  const { productname, description, price, category } = req.body;
   const image = req.file ? req.file.filename : "";
 
-  const newProduct = new product({ productname, description, price, image });
+  const newProduct = new product({ productname, description, price, category, image });
 
   newProduct
     .save()
@@ -51,7 +49,6 @@ router.route("/add").post(upload.single("image"), (req, res) => {
       res.status(500).json("Error adding product");
     });
 });
-
 // Route to get a single product by ID
 router.route("/:id").get((req, res) => {
   product
