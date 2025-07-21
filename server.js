@@ -10,13 +10,16 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+const allowedOrigins = process.env.DEVELOPMENT
+  ? ["https://blackbunny-46eb.onrender.com"]
+  : ["http://localhost:5173"];
+
 app.use(
   cors({
-    origin: ["https://blackbunny-46eb.onrender.com", "http://localhost:5173"], // Укажите нужные домены
+    origin: allowedOrigins,
     credentials: true,
   })
 );
-app.use(express.json());
 
 const fs = require("fs");
 const uploadDir = "/data/upload";
