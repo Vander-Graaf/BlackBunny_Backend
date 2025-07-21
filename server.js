@@ -19,11 +19,7 @@ app.use(
 app.use(express.json());
 
 const fs = require("fs");
-
-let uploadDir = "/data/upload";
-if (process.env.DEVELOPMENT) {
-  uploadDir = "./assets/ProductPhoto";
-}
+const uploadDir = "/data/upload";
 
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
