@@ -10,15 +10,15 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-const allowedOrigins = process.env.DEVELOPMENT
-  ? ["http://localhost:5173"]
-  : ["https://blackbunny-46eb.onrender.com"];
-
+//const allowedOrigins = process.env.DEVELOPMENT
+//  ? ["http://localhost:5173"]
+//  : ["https://blackbunny-46eb.onrender.com"];
+//
 app.use(express.json());
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: ["https://blackbunny-46eb.onrender.com"], // Укажите нужные домены
     credentials: true,
   })
 );
