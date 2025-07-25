@@ -26,15 +26,29 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Route to get all products
-router.route("/").get((req, res) => {
-  product
-    .find()
-    .then((products) => res.json(products))
-    .catch((err) => {
-      console.error("Error fetching products:", err);
-      res.status(500).json("Error fetching products");
+router.get("/", async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // текущая страница
+  const limit = parseInt(req.query.limit) || 15; // товаров на страницу
+
+  try {
+    const total = await product.countDocuments();
+    const products = await product
+      .find()
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .sort({ _id: -1 }); // по убыванию (новые сверху)
+
+    res.json({
+      products,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
     });
+  } catch (err) {
+    console.error("Error fetching products:", err);
+    res.status(500).json("Error fetching products");
+  }
 });
+
 router.route("/add").post(upload.single("image"), (req, res) => {
   const { productname, description, price, category } = req.body;
   const image = req.file ? req.file.filename : "";
