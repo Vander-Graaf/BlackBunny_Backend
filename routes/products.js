@@ -96,17 +96,15 @@ router.route("/:id").delete(async (req, res) => {
 });
 
 router.route("/:id").put(upload.single("image"), async (req, res) => {
-  const { productname, description, price } = req.body;
+  const { productname, description, price, category } = req.body; // добавил category
   const newImage = req.file ? req.file.filename : req.body.image;
 
   try {
-    // Find the existing product
     const existingProduct = await product.findById(req.params.id);
     if (!existingProduct) {
       return res.status(404).json("Product not found");
     }
 
-    // If there's a new image and it's different from the existing one, handle deletion
     if (req.file && existingProduct.image && newImage !== existingProduct.image) {
       const oldFilePath = path.join("/data/upload", existingProduct.image);
 
@@ -125,10 +123,9 @@ router.route("/:id").put(upload.single("image"), async (req, res) => {
       });
     }
 
-    // Update the product with the new image or retain the old one if no new image is provided
     const updatedProduct = await product.findByIdAndUpdate(
       req.params.id,
-      { productname, description, price, image: newImage },
+      { productname, description, price, category, image: newImage }, // добавил category сюда
       { new: true }
     );
 
