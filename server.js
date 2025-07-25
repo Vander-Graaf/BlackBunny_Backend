@@ -45,7 +45,9 @@ mongoose
 const productsRouter = require("./routes/products");
 const usersRouter = require("./routes/users");
 const orderRoutes = require("./routes/orders");
+const adminRoutes = require("./routes/admin");
 
+app.use("/admin", adminRoutes);
 app.use("/products", productsRouter);
 app.use("/users", usersRouter);
 app.use("/orders", orderRoutes); // Use the orders routes

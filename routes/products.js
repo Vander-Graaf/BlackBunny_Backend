@@ -95,17 +95,6 @@ router.route("/:id").delete(async (req, res) => {
   }
 });
 
-// Route for admin login
-router.route("/admin/login").post((req, res) => {
-  const { password } = req.body;
-  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-  if (password === ADMIN_PASSWORD) {
-    res.json({ authenticated: true });
-  } else {
-    res.status(401).json({ authenticated: false });
-  }
-});
-
 router.route("/:id").put(upload.single("image"), async (req, res) => {
   const { productname, description, price } = req.body;
   const newImage = req.file ? req.file.filename : req.body.image;
