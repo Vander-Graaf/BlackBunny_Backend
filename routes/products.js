@@ -24,19 +24,20 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
-// Route to get all products
 router.get("/", async (req, res) => {
-  const page = parseInt(req.query.page) || 1; // текущая страница
-  const limit = parseInt(req.query.limit) || 15; // товаров на страницу
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 15;
+  const category = req.query.category || "";
+
+  const filter = category ? { category } : {};
 
   try {
-    const total = await product.countDocuments();
+    const total = await product.countDocuments(filter);
     const products = await product
-      .find()
+      .find(filter)
       .skip((page - 1) * limit)
       .limit(limit)
-      .sort({ _id: -1 }); // по убыванию (новые сверху)
+      .sort({ _id: -1 });
 
     res.json({
       products,
